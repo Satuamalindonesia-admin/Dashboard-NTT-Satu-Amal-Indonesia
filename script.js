@@ -82,39 +82,40 @@ function setStatus(ok, text) {
 ===================================================== */
 
 function parseCSV(text) {
-
   const rows = [];
   let row = [];
   let value = '';
   let insideQuotes = false;
 
   for (let i = 0; i < text.length; i++) {
-
     const char = text[i];
     const next = text[i + 1];
 
+    // Handle escaped quote ""
     if (char === '"' && insideQuotes && next === '"') {
       value += '"';
       i++;
       continue;
     }
 
+    // Toggle quote state
     if (char === '"') {
       insideQuotes = !insideQuotes;
       continue;
     }
 
+    // Comma delimiter
     if (char === ',' && !insideQuotes) {
       row.push(value.trim());
       value = '';
       continue;
     }
 
+    // New line
     if (
       (char === '\n' || char === '\r') &&
       !insideQuotes
     ) {
-
       if (char === '\r' && next === '\n') {
         i++;
       }
@@ -133,6 +134,7 @@ function parseCSV(text) {
     value += char;
   }
 
+  // Last value
   if (value || row.length) {
     row.push(value.trim());
 
@@ -141,7 +143,61 @@ function parseCSV(text) {
     }
   }
 
+  /*
+   * FIX WPS CSV
+   * Jika seluruh baris terbaca sebagai 1 kolom,
+   * pecah kembali berdasarkan koma.
+   */
+  if (
+    rows.length &&
+    rows[0].length === 1 &&
+    String(rows[0][0]).includes(',')
+  ) {
+    return rows.map(function (r) {
+      return splitCSVLine(r[0]);
+    });
+  }
+
   return rows;
+}
+
+
+/*
+ * Membaca satu baris CSV dengan aman.
+ * Mendukung koma di dalam tanda kutip.
+ */
+function splitCSVLine(line) {
+  const result = [];
+  let value = '';
+  let insideQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    const next = line[i + 1];
+
+    if (char === '"' && insideQuotes && next === '"') {
+      value += '"';
+      i++;
+      continue;
+    }
+
+    if (char === '"') {
+      insideQuotes = !insideQuotes;
+      continue;
+    }
+
+    if (char === ',' && !insideQuotes) {
+      result.push(value.trim());
+      value = '';
+      continue;
+    }
+
+    value += char;
+  }
+
+  result.push(value.trim());
+
+  return result;
 }
 
 /* =====================================================
@@ -498,23 +554,23 @@ function render(d) {
 
   /* CHART */
 
-  renderChart(
-    'reffChart',
-    'bar',
-    (d.byReff || []).slice().reverse()
-  );
+ renderChart(
+  'channelChart',
+  'bar',
+  (d.byReff || []).slice().reverse()
+);
 
-  renderChart(
-    'jenisChart',
-    'doughnut',
-    d.byJenis || []
-  );
+renderChart(
+  'typeChart',
+  'doughnut',
+  d.byJenis || []
+);
 
-  renderChart(
-    'dateChart',
-    'line',
-    (d.byDate || []).slice().reverse()
-  );
+renderChart(
+  'trendChart',
+  'line',
+  (d.byDate || []).slice().reverse()
+);
 
   /* RECENT */
 
