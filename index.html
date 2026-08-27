@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Satu Amal Indonesia — NTT Response Command Center</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">SATU AMAL INDONESIA</div>
+        <h1>NTT Response Command Center</h1>
+        <p>Dashboard Penghimpunan Donasi — Respons Gempa NTT</p>
+      </div>
+      <div class="actions">
+        <span id="statusDot" class="status-dot"></span>
+        <span id="statusText">Data belum dimuat</span>
+        <button id="importBtn" class="btn">📂 Import Excel/CSV</button>
+        <button id="clearBtn" class="btn btn-light">Reset</button>
+        <input id="fileInput" type="file" accept=".csv,.txt" hidden>
+      </div>
+    </header>
+
+    <section class="cards four">
+      <article class="card">
+        <span>Total Donasi</span>
+        <strong id="total">Rp0</strong>
+      </article>
+      <article class="card">
+        <span>Jumlah Transaksi</span>
+        <strong id="transactions">0</strong>
+      </article>
+      <article class="card">
+        <span>Jumlah Donatur</span>
+        <strong id="donors">0</strong>
+      </article>
+      <article class="card">
+        <span>Donasi Hari Ini</span>
+        <strong id="today">Rp0</strong>
+      </article>
+    </section>
+
+    <section class="cards two">
+      <article class="card progress-card">
+        <div class="row">
+          <div>
+            <span>Target 1 Pekan</span>
+            <b id="weeklyText">Rp0 / Rp200 Juta</b>
+          </div>
+          <strong id="weeklyPct">0%</strong>
+        </div>
+        <div class="progress"><i id="weeklyBar"></i></div>
+        <small id="weeklyRemaining">Sisa Rp200.000.000</small>
+      </article>
+
+      <article class="card progress-card">
+        <div class="row">
+          <div>
+            <span>Target Respons NTT — 2 Bulan</span>
+            <b id="overallText">Rp0 / Rp1 Miliar</b>
+          </div>
+          <strong id="overallPct">0%</strong>
+        </div>
+        <div class="progress"><i id="overallBar"></i></div>
+        <small id="overallRemaining">Sisa Rp1.000.000.000</small>
+      </article>
+    </section>
+
+    <section class="cards two">
+      <article class="card chart-card">
+        <div class="card-title"><b>Donasi per Kanal</b><small>Nominal & transaksi</small></div>
+        <div id="channelChart" class="bar-chart empty">Belum ada data</div>
+      </article>
+
+      <article class="card chart-card">
+        <div class="card-title"><b>Donasi per Jenis</b><small>Sumber penghimpunan</small></div>
+        <div id="typeChart" class="donut-wrap empty">Belum ada data</div>
+      </article>
+    </section>
+
+    <section class="card chart-card wide">
+      <div class="card-title"><b>Tren Penghimpunan</b><small>Donasi per hari</small></div>
+      <div id="trendChart" class="trend empty">Belum ada data</div>
+    </section>
+
+    <section class="card table-card">
+      <div class="card-title">
+        <b>Donasi Terbaru</b>
+        <small>25 transaksi terakhir</small>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>WAKTU</th>
+              <th>DONATUR</th>
+              <th>NOMINAL</th>
+              <th>KANAL</th>
+              <th>JENIS</th>
+              <th>PIC</th>
+            </tr>
+          </thead>
+          <tbody id="recent">
+            <tr><td colspan="6" class="muted">Belum ada data yang dapat ditampilkan.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>
+      <span>Mode Offline • Data tersimpan di browser ini.</span>
+      <span id="updated"></span>
+    </footer>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
